@@ -1,6 +1,6 @@
 using Microsoft.Net.Http.Headers;
-using Microsoft.Extensions.Configuration;
-
+using Grpc.Net.Client;
+using GrpcClient;
 // Build a config object, using env vars and JSON providers.
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -22,6 +22,10 @@ builder.Services.AddHttpClient("Recipes", httpClient =>
     httpClient.DefaultRequestHeaders.Add(
         HeaderNames.UserAgent, "HttpRequestsSample");
 });
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

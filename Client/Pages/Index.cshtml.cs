@@ -1,20 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Grpc.Net.Client;
+using GrpcClient;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http;
+
 namespace Exercise3.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        public List<Recipe> Recipes { get; set; } = new();
-        public IndexModel(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
+        private readonly IConfiguration _configuration;
+
+        [BindProperty]
+        public string Message { get; set; }
+        public IndexModel(IConfiguration config) => _configuration = config;
 
         public async Task OnGetAsync()
         {
-            var client = _httpClientFactory.CreateClient("Recipes");
-            var fetchRecipes = await client.GetFromJsonAsync<List<Recipe>>("recipes");
-            if (fetchRecipes is not null)
-                Recipes = fetchRecipes;
+            var input = new HelloRequest { Name = "Bassel" };
+            var channel = GrpcChannel.ForAddress(_configuration["url"]);
+            var client = new Greeter.GreeterClient(channel);
+            var reply = await client.SayHelloAsync(input);
+            Message = reply.Message;
         }
     }
 }
