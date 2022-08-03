@@ -61,6 +61,10 @@
   <ItemGroup>
     <None Remove="Protos\greet.proto" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Watch Remove="Protos\greet.proto" />
+  </ItemGroup>
   
   <ItemGroup>
     
