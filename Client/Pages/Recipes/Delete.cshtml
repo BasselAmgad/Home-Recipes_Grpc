@@ -1,0 +1,67 @@
+﻿@page
+@model Exercise3.Pages.Recipes.DeleteModel
+@{
+}
+<div class="container">
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="list-group">
+                        <div class="card-body text-dark list-group-item">
+                            <h4 class="card-title text-center">
+                                Are you sure you want to delete "@Model.FetchedRecipe.Title"?
+                            </h4>
+                            <div class="text-center">
+                                @foreach (var category in Model.FetchedRecipe.Categories)
+                                {
+                                    <span style="font-size:12px; margin-top:5px; margin-right: 5px;" class="badge rounded-pill bg-primary">@category</span>
+                                }
+                            </div>
+                            <h5 class="card-title">Ingredients</h5>
+                            <ul class="list-group ">
+                                @foreach (var ingredient in Model.DetailedIngredients)
+                                {
+                                    <li class="list-group-item">@ingredient</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="card-body text-dark list-group-item">
+                            <h5 class="card-title">Instructions</h5>
+                            <ol class="list-group list-group-numbered">
+                                @foreach (var instruction in Model.DetailedInstructions)
+                                {
+                                    <li class="list-group-item">@instruction</li>
+                                }
+                            </ol>
+                        </div>
+                        <div class="card-footer text-center">
+                            <form method="post" id="deleteForm">
+                                <input type="hidden" asp-for="FetchedRecipe.Id" />
+                                <input type="button" onclick="confirmEdit()" value="Delete" class="btn btn-danger" />
+                                <a class="btn btn-secondary" asp-page="Index"
+                                   asp-route-id="@Model.FetchedRecipe.Id">
+                                    Cancel
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    function confirmEdit() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Recipe Deleted',
+            showConfirmButton: false,
+            timer: 1500
+        }).then((result) => {
+            document.getElementById("deleteForm").submit();
+        });
+    }
+</script>

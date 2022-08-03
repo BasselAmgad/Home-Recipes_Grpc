@@ -1,0 +1,65 @@
+﻿@page
+@model Exercise3.Pages.Recipes.EditModel
+@{
+}
+<div class="container">
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Edit "@Model.Recipe.Title"   </h4>
+                    <form method="post" id="editForm">
+                        <input hidden asp-for="Recipe.Id" class="form-control" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Recipe.Title" id="recipeTitle" class="form-control" />
+                            <label asp-for="Recipe.Title"></label>
+                            <span asp-validation-for="Recipe.Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Recipe.Ingredients" id="recipeIngredients"
+                                      class="form-control" style="height: 100px" minlength="10"></textarea>
+                            <label asp-for="Recipe.Ingredients"></label>
+                            <span asp-validation-for="Recipe.Ingredients" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Recipe.Instructions" id="recipeInstructions"
+                                      class="form-control" style="height: 100px" minlength="10"></textarea>
+                            <label asp-for="Recipe.Instructions"></label>
+                            <span asp-validation-for="Recipe.Instructions" class="text-danger"></span>
+                        </div>
+                        <div class="form-control">
+                            <label asp-for="Categories" for="selectCategory" class="form-label"></label>
+                            <select asp-for="Categories" id="selectCategory"
+                                    asp-items="@(new SelectList(Model.Categories))"
+                                    class="form-select" multiple></select>
+                            <span asp-validation-for="Categories" class="text-danger"></span>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button class="btn btn-primary" type="button" onclick="confirmEdit()">
+                                Update
+                            </button>
+                            <a class="btn btn-secondary" asp-page="Index">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    function confirmEdit() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Recipe Edited',
+            showConfirmButton: false,
+            timer: 1500
+        }).then((result) => {
+            document.getElementById("editForm").submit();
+        });
+    }
+</script>

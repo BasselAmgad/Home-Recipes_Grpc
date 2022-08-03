@@ -1,0 +1,72 @@
+﻿@page
+@model Exercise3.Pages.Recipes.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Create Recipe</h4>
+                    <form method="post" id="createForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Recipe.Title" id="recipeTitle" class="form-control" />
+                            <label asp-for="Recipe.Title"></label>
+                            <span asp-validation-for="Recipe.Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Recipe.Ingredients" id="recipeIngredients"
+                                      oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                      class="form-control" style="height: 100px" minlength="10"></textarea>
+                            <label asp-for="Recipe.Ingredients"></label>
+                            <span asp-validation-for="Recipe.Ingredients" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Recipe.Instructions" id="recipeInstructions"
+                                      oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                      class="form-control" style="height: 100px" minlength="10"></textarea>
+                            <label asp-for="Recipe.Instructions"></label>
+                            <span asp-validation-for="Recipe.Instructions" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Recipe.Categories"></label>
+                            <select asp-for="Recipe.Categories" id="selectCategory" style="height: 130px"
+                                    asp-items="@(new SelectList(Model.Recipe.Categories))"
+                                    class="form-select" multiple></select>
+                            <span asp-validation-for="Recipe.Categories" class="text-danger"></span>
+                        </div>
+                        <div class="card-footer text-center btn">
+                            <button type="button" onclick="confirmCreate(this)" value="Create" class="btn btn-primary">
+                                Create
+                            </button>
+                            <a class="btn btn-secondary" asp-page="Index">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    function confirmCreate() {
+        let form = document.getElementById("createForm").submit();
+        if (form.valid) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Recipe Created',
+                showConfirmButton: false,
+                timer: 1500
+            }).then((result) => {
+                submit();
+            });
+        }else{
+            form.submit();
+        }
+    }
+</script>
