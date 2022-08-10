@@ -10,7 +10,7 @@ namespace GrpcServer.Services
 
         public RecipeService(ILogger logger) => _logger = logger;
 
-        public override async Task<CategoryList> getAllCategories(GetCategoriesRequest request, ServerCallContext context)
+        public override async Task<CategoryList> getAllCategories(EmptyRequest request, ServerCallContext context)
         {
             Data data = new(_logger);
             var categories = await data.GetAllCategoriesAsync();
