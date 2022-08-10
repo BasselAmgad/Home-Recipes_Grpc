@@ -1,6 +1,4 @@
 using Microsoft.Net.Http.Headers;
-using Grpc.Net.Client;
-using GrpcClient;
 // Build a config object, using env vars and JSON providers.
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")

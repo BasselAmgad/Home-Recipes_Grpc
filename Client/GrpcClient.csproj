@@ -53,17 +53,11 @@
     <Content Remove="C:\Users\RS3\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
     <Content Remove="C:\Users\RS3\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Watch Include="Protos\*.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Protos\greet.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Watch Remove="Protos\greet.proto" />
+    <Protobuf Include="..\GrpcService\Protos\recipe.proto" GrpcServices="Client">
+      <Link>Protos\category.proto</Link>
+    </Protobuf>
   </ItemGroup>
   
   <ItemGroup>
@@ -75,10 +69,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

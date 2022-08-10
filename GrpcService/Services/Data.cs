@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using GrpcServer.Protos;
+using System.Text.Json;
 
 class Data
 {
@@ -14,6 +15,15 @@ class Data
         _logger = logger;
     }
 
+    public async Task<Recipe> GetRecipeAsync(Guid id)
+    {
+        await LoadData();
+        var recipe = _recipes.Find(r => r.Id.Equals(id));
+        if (recipe == null)
+            recipe = new Recipe();
+        return recipe;
+    }
+
     public async Task<List<Recipe>> GetRecipesAsync()
     {
         await LoadData();
@@ -25,15 +35,6 @@ class Data
         await LoadData();
         _recipes.Add(r);
         await SaveDataAsync();
-    }
-
-    public async Task<Recipe> GetRecipeAsync(Guid id)
-    {
-        await LoadData();
-        var recipe = _recipes.Find(r => r.Id == id);
-        if (recipe == null)
-            recipe = new Recipe();
-        return recipe;
     }
 
     public async Task RemoveRecipeAsync(Guid id)
@@ -51,7 +52,11 @@ class Data
         recipe.Title = newRecipe.Title;
         recipe.Ingredients = newRecipe.Ingredients;
         recipe.Instructions = newRecipe.Instructions;
-        recipe.Categories = newRecipe.Categories;
+        recipe.Categories.Clear();
+        foreach(var category in recipe.Categories)
+        {
+            recipe.Categories.Add(category);
+        }
         await SaveDataAsync();
         return recipe;
     }
