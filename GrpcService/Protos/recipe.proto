@@ -7,8 +7,8 @@ package recipe;
 service recipe{
 	rpc getAllCategories(GetCategoriesRequest) returns (CategoryList);
 	rpc addCategory(Category) returns (CategoryResponse);
-	rpc editCategory(CategoryRequest) returns (CategoryResponse);
-	rpc deleteCategory(CategoryRequest) returns (CategoryResponse);
+	rpc editCategory(EditCategory) returns (CategoryResponse);
+	rpc deleteCategory(Category) returns (CategoryResponse);
 }
 
 message Recipe{
@@ -31,7 +31,7 @@ message CategoryList{
 	repeated string categories = 1;
 }
 
-message CategoryRequest{
+message EditCategoryRequest{
 	string oldCategory = 1;
 	string newCategory = 2;
 }

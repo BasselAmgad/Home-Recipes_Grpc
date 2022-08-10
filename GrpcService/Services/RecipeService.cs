@@ -4,19 +4,11 @@ using GrpcServer.Protos;
 using System.Text.Json;
 namespace GrpcServer.Services
 {
-    public class CategoryService : recipe.recipeBase
+    public class RecipeService : recipe.recipeBase
     {
         private readonly ILogger _logger;
-        private List<Recipe> _recipes { get; set; } = new();
-        private List<string> _categories { get; set; } = new();
-        private string _recipesFilePath;
-        private string _categoriesFilePath;
-        public CategoryService(ILogger logger)
-        {
-            _recipesFilePath = Path.Combine(Environment.CurrentDirectory, "Data", "Recipes.json");
-            _categoriesFilePath = Path.Combine(Environment.CurrentDirectory, "Data", "Categories.json");
-            _logger = logger;
-        }
+
+        public RecipeService(ILogger logger) => _logger = logger;
 
         public override async Task<CategoryList> getAllCategories(GetCategoriesRequest request, ServerCallContext context)
         {
@@ -28,6 +20,20 @@ namespace GrpcServer.Services
                 categoryList.Categories.Add(category);
             }
             return categoryList;
+        }
+
+        public override async Task<CategoryResponse> addCategory(Category request, ServerCallContext context)
+        {
+            Data data = new(_logger);
+            await data.AddCategoryAsync(request.CategoryName);
+            return new CategoryResponse() { StatusCode = 200 };
+        }
+
+        public override async Task<CategoryResponse> deleteCategory(Category request, ServerCallContext context)
+        {
+            Data data = new(_logger);
+            await data.RemoveCategoryAsync(request.CategoryName);
+            return new CategoryResponse() { StatusCode = 200 };
         }
     }
 }
