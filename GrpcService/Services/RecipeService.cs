@@ -29,6 +29,13 @@ namespace GrpcServer.Services
             return new CategoryResponse() { StatusCode = 200 };
         }
 
+        public override async Task<CategoryResponse> editCategory(EditCategoryRequest request, ServerCallContext context)
+        {
+            Data data = new(_logger);
+            await data.EditCategoryAsync(request.OldCategory,request.NewCategory);
+            return new CategoryResponse() { StatusCode = 200 };
+        }
+
         public override async Task<CategoryResponse> deleteCategory(Category request, ServerCallContext context)
         {
             Data data = new(_logger);

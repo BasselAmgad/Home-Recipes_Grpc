@@ -7,7 +7,7 @@ package recipe;
 service recipe{
 	rpc getAllCategories(GetCategoriesRequest) returns (CategoryList);
 	rpc addCategory(Category) returns (CategoryResponse);
-	rpc editCategory(EditCategory) returns (CategoryResponse);
+	rpc editCategory(EditCategoryRequest) returns (CategoryResponse);
 	rpc deleteCategory(Category) returns (CategoryResponse);
 }
 
