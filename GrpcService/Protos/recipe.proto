@@ -5,14 +5,14 @@ option csharp_namespace = "GrpcServer.Protos";
 package recipe;
 
 service recipe{
-	rpc getAllRecipes(EmptyRequest) returns (RecipeList);
-	rpc addRecipe(Recipe) returns (RecipeResponse);
-	rpc editRecipe(EditRecipeRequest) returns (RecipeResponse);
-	rpc deleteRecipe(DeleteRecipeRequest) returns (RecipeResponse);
-	rpc getAllCategories(EmptyRequest) returns (CategoryList);
-	rpc addCategory(Category) returns (CategoryResponse);
-	rpc editCategory(EditCategoryRequest) returns (CategoryResponse);
-	rpc deleteCategory(Category) returns (CategoryResponse);
+	rpc GetAllRecipes(EmptyRequest) returns (RecipeList);
+	rpc AddRecipe(Recipe) returns (RecipeResponse);
+	rpc EditRecipe(EditRecipeRequest) returns (RecipeResponse);
+	rpc DeleteRecipe(DeleteRecipeRequest) returns (RecipeResponse);
+	rpc GetAllCategories(EmptyRequest) returns (CategoryList);
+	rpc AddCategory(Category) returns (CategoryResponse);
+	rpc EditCategory(EditCategoryRequest) returns (CategoryResponse);
+	rpc DeleteCategory(Category) returns (CategoryResponse);
 }
 
 message Recipe{
