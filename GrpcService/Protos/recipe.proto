@@ -6,9 +6,10 @@ package recipe;
 
 service recipe{
 	rpc GetAllRecipes(EmptyRequest) returns (RecipeList);
+	rpc GetRecipe(RecipeRequest) returns (Recipe);
 	rpc AddRecipe(Recipe) returns (RecipeResponse);
 	rpc EditRecipe(EditRecipeRequest) returns (RecipeResponse);
-	rpc DeleteRecipe(DeleteRecipeRequest) returns (RecipeResponse);
+	rpc DeleteRecipe(RecipeRequest) returns (RecipeResponse);
 	rpc GetAllCategories(EmptyRequest) returns (CategoryList);
 	rpc AddCategory(Category) returns (CategoryResponse);
 	rpc EditCategory(EditCategoryRequest) returns (CategoryResponse);
@@ -45,7 +46,7 @@ message EditCategoryRequest{
 	string newCategory = 2;
 }
 
-message DeleteRecipeRequest{
+message RecipeRequest{
 	string id = 1;
 }
 
