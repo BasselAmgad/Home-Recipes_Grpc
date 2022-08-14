@@ -1,25 +1,29 @@
-using Grpc.Net.Client;
-using GrpcClient.Protos;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Exercise3.Pages.Recipes
 {
     public class IndexModel : PageModel
     {
-        private readonly IConfiguration _cofnig;
+        private readonly IHttpClientFactory _httpClientFactory;
         public List<Recipe> Recipes { get; set; } = new();
-        public IndexModel(IConfiguration config) => _cofnig = config;
+        public string? ChoosenCategory { get; set; }
+        public IndexModel(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? category)
         {
-            var channel = GrpcChannel.ForAddress(_cofnig["url"]);
-            var client = new recipe.recipeClient(channel);
-            var request = new EmptyRequest();
-            RecipeList response = await client.GetAllRecipesAsync(request);
-            foreach (var recipe in response.Recipes)
+            var client = _httpClientFactory.CreateClient("Recipes");
+            var fetchRecipes = await client.GetFromJsonAsync<List<Recipe>>("recipes");
+            if (fetchRecipes is not null)
             {
-                Recipes.Add(new Recipe(recipe));
+                if (category is not null)
+                {
+                    fetchRecipes = fetchRecipes.Where(r => r.Categories.Contains(category)).ToList();
+                    ChoosenCategory = category;
+                }
+                Recipes = fetchRecipes;
             }
+                
         }
     }
 }

@@ -1,5 +1,3 @@
-using Grpc.Net.Client;
-using GrpcClient.Protos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -7,20 +5,18 @@ namespace Exercise3.Pages.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly IConfiguration _config;
+        private readonly IHttpClientFactory _httpClientFactory;
+        //private IConfiguration _config { get; set; }
         public List<string> Categories { get; set; } = new();
-        public IndexModel(IConfiguration config) => _config = config;
+        public IndexModel(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var channel = GrpcChannel.ForAddress(_config["url"]);
-            var client = new recipe.recipeClient(channel);
-            var request = new EmptyRequest();
-            CategoryList response = await client.GetAllCategoriesAsync(request);
-            foreach (var category in response.Categories)
-            {
-                Categories.Add(category);
-            }
+            var client = _httpClientFactory.CreateClient("Recipes");
+            var request = await client.GetFromJsonAsync<List<string>>("categories");
+            if (request == null)
+                return NotFound();
+            Categories = request;
             return Page();
         }
     }

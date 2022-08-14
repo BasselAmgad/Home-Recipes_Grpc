@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @model Exercise3.Pages.Recipes.EditModel
 @{
 }
@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-control">
                             <label asp-for="Categories" for="selectCategory" class="form-label"></label>
-                            <select asp-for="Categories" id="selectCategory"
+                            <select asp-for="Recipe.Categories" id="selectCategory"
                                     asp-items="@(new SelectList(Model.Categories))"
                                     class="form-select" multiple></select>
                             <span asp-validation-for="Categories" class="text-danger"></span>
@@ -61,5 +61,15 @@
         }).then((result) => {
             document.getElementById("editForm").submit();
         });
+    }
+    const tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+        tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+        tx[i].addEventListener("input", OnInput, false);
+    }
+
+    function OnInput() {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
     }
 </script>

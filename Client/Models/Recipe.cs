@@ -21,16 +21,4 @@
         Instructions = instructions;
         Categories = categories;
     }
-
-    public Recipe(GrpcClient.Protos.Recipe recipe)
-    {
-        Id = new Guid(recipe.Id+"");
-        Title = recipe.Title;
-        Ingredients = recipe.Ingredients;
-        Instructions = recipe.Instructions;
-        foreach(var category in recipe.Categories)
-        {
-            Categories.Add(category);
-        }
-    }
 }
