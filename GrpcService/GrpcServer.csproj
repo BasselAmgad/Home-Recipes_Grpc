@@ -7,17 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\recipe.proto" />
+    <None Remove="Protos\recipes.proto" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\recipe.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\recipes.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="protobuf-net" Version="3.1.17" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.5" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.47.0" />
   </ItemGroup>
 
 </Project>

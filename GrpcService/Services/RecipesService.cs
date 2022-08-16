@@ -4,23 +4,26 @@ using GrpcServer.Protos;
 using System.Text.Json;
 namespace GrpcServer.Services
 {
-    public class RecipeService : recipe.recipeBase
+    public class RecipesService : Recipes.RecipesBase
     {
-        private readonly ILogger _logger;
-
-        public RecipeService(ILogger logger) => _logger = logger;
+        private readonly ILogger<Recipe> _logger;
 
         public override async Task<RecipeList> GetAllRecipes(EmptyRequest request, ServerCallContext context)
         {
             Data data = new (_logger);
             var recipes = await data.GetRecipesAsync();
             RecipeList recipeList = new();
-            recipeList.Recipes.Add(recipes);
+            foreach(var recipe in recipes)
+            {
+                recipeList.Recipes.Add(recipe);
+            }
+            Console.WriteLine("hi "+recipeList.Recipes.Count);
             return recipeList;
         }
 
         public override async Task<Recipe> GetRecipe(RecipeRequest request, ServerCallContext context)
         {
+            Console.WriteLine("Hello");
             Data data = new (_logger);
             var recipe = await data.GetRecipeAsync(new Guid(request.Id));
             return recipe;

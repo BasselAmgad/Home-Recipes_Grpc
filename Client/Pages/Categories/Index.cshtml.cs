@@ -1,22 +1,26 @@
+using Grpc.Net.Client;
+using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Client.Protos;
 
 namespace Exercise3.Pages.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        //private IConfiguration _config { get; set; }
+        private readonly IConfiguration _config;
         public List<string> Categories { get; set; } = new();
-        public IndexModel(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
+        public IndexModel(IConfiguration config) => _config = config;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var client = _httpClientFactory.CreateClient("Recipes");
-            var request = await client.GetFromJsonAsync<List<string>>("categories");
-            if (request == null)
-                return NotFound();
-            Categories = request;
+            var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
+            var client = new Client.Protos.Recipes.RecipesClient(channel);
+            var reply = await client.GetAllCategoriesAsync(new EmptyRequest { });
+            foreach(var category in reply.Categories)
+            {
+                Categories.Add(category);
+            }
             return Page();
         }
     }

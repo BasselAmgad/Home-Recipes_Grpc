@@ -1,3 +1,5 @@
+using Grpc.Net.Client;
+using Client.Protos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -5,10 +7,10 @@ namespace Exercise3.Pages.Categories
 {
     public class CreateModel : PageModel
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _config;
         [BindProperty]
         public string Category { get; set; } = default!;
-        public CreateModel(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
+        public CreateModel(IConfiguration configuration) => _config = configuration;
 
         public void OnGet()
         {
@@ -16,10 +18,10 @@ namespace Exercise3.Pages.Categories
         
         public async Task<IActionResult> OnPostAsync()
         {
-            var client = _httpClientFactory.CreateClient("Recipes");
-            var request = await client.PostAsync($"categories?category={Category}",null);
-            if(request.IsSuccessStatusCode)
-                return RedirectToPage("./Index");
+            var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
+            var client = new Client.Protos.Recipes.RecipesClient(channel);
+            var request = new Category { CategoryName = Category };
+            var reply = client.AddCategory(request);
             return Page();
         }
     }

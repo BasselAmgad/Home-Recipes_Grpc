@@ -2,9 +2,9 @@ syntax = "proto3";
 
 option csharp_namespace = "GrpcServer.Protos";
 
-package recipe;
+package recipes;
 
-service recipe{
+service Recipes{
 	rpc GetAllRecipes(EmptyRequest) returns (RecipeList);
 	rpc GetRecipe(RecipeRequest) returns (Recipe);
 	rpc AddRecipe(Recipe) returns (RecipeResponse);
@@ -17,7 +17,7 @@ service recipe{
 }
 
 message Recipe{
-	bytes id = 1;
+	string id = 1;
 	string title = 2;
 	string ingredients = 3;
 	string instructions = 4;
