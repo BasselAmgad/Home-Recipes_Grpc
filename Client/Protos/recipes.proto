@@ -21,7 +21,7 @@ message Recipe{
 	string title = 2;
 	string ingredients = 3;
 	string instructions = 4;
-	repeated string categories = 5;
+	repeated Category categories = 5;
 }
 
 message Category{

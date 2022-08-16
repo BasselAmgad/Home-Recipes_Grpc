@@ -21,7 +21,7 @@ namespace Exercise3.Pages.Categories
             var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
             var client = new Client.Protos.Recipes.RecipesClient(channel);
             var request = new Category { CategoryName = Category };
-            var reply = client.AddCategory(request);
+            var reply = await client.AddCategoryAsync(request);
             return Page();
         }
     }

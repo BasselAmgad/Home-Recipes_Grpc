@@ -17,13 +17,11 @@ namespace GrpcServer.Services
             {
                 recipeList.Recipes.Add(recipe);
             }
-            Console.WriteLine("hi "+recipeList.Recipes.Count);
             return recipeList;
         }
 
         public override async Task<Recipe> GetRecipe(RecipeRequest request, ServerCallContext context)
         {
-            Console.WriteLine("Hello");
             Data data = new (_logger);
             var recipe = await data.GetRecipeAsync(new Guid(request.Id));
             return recipe;

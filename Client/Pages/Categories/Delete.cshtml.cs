@@ -23,7 +23,7 @@ namespace Exercise3.Pages.Categories
             var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
             var client = new Client.Protos.Recipes.RecipesClient(channel);
             var request = new Category { CategoryName = Category };
-            var reply = client.DeleteCategory(request);
+            var reply = await client.DeleteCategoryAsync(request);
             return Page();
         }
     }

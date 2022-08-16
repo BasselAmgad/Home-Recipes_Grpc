@@ -1,8 +1,7 @@
-using Grpc.Net.Client;
-using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Client.Protos;
+using Grpc.Net.Client;
 
 namespace Exercise3.Pages.Categories
 {

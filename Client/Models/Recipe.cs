@@ -21,4 +21,12 @@
         Instructions = instructions;
         Categories = categories;
     }
+    public Recipe(string id, string title, string ingredients, string instructions, List<string> categories)
+    {
+        Id = new Guid(id);
+        Title = title;
+        Ingredients = ingredients;
+        Instructions = instructions;
+        Categories = categories;
+    }
 }
