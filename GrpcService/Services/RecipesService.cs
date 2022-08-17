@@ -4,12 +4,10 @@ namespace GrpcServer.Services
 {
     public class RecipesService : Recipes.RecipesBase
     {
-        private readonly ILogger<Recipe> _logger;
         private readonly Data data;
 
         public RecipesService(ILogger<Recipe> logger)
         {
-            _logger = logger;
             data = Data.GetInstance(logger);
         }
 
