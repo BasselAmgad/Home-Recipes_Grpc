@@ -1,18 +1,33 @@
 ﻿using GrpcServer.Protos;
 using System.Text.Json;
-
-class Data
+using Microsoft.Extensions.Logging.Console;
+public class Data
 {
+    private static Data? _instance = null;
+    private static readonly Object _mutex = new Object();
     private readonly ILogger _logger;
     private List<Recipe> _recipes { get; set; } = new();
     private List<string> _categories { get; set; } = new();
     private string _recipesFilePath;
     private string _categoriesFilePath;
+
     public Data(ILogger logger)
     {
         _recipesFilePath = Path.Combine(Environment.CurrentDirectory, "Data", "Recipes.json");
         _categoriesFilePath = Path.Combine(Environment.CurrentDirectory, "Data", "Categories.json");
         _logger = logger;
+    }
+
+    public static Data GetInstance(ILogger logger)
+    {
+        lock (_mutex)
+        {
+            if(_instance == null)
+            {
+                _instance = new(logger);
+            }
+            return _instance;
+        }
     }
 
     public async Task<Recipe> GetRecipeAsync(Guid id)
