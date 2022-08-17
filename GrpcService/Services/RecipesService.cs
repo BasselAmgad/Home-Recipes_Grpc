@@ -4,16 +4,16 @@ namespace GrpcServer.Services
 {
     public class RecipesService : Recipes.RecipesBase
     {
-        private readonly Data data;
+        private readonly Data _Data;
 
-        public RecipesService(ILogger<Recipe> logger)
+        public RecipesService(Data data)
         {
-            data = Data.GetInstance(logger);
+            _Data = data;
         }
 
         public override async Task<RecipeList> GetAllRecipes(EmptyRequest request, ServerCallContext context)
         {
-            var recipes = await data.GetRecipesAsync();
+            var recipes = await _Data.GetRecipesAsync();
             RecipeList recipeList = new();
             foreach (var recipe in recipes)
             {
@@ -24,31 +24,31 @@ namespace GrpcServer.Services
 
         public override async Task<Recipe> GetRecipe(RecipeRequest request, ServerCallContext context)
         {
-            var recipe = await data.GetRecipeAsync(new Guid(request.Id));
+            var recipe = await _Data.GetRecipeAsync(new Guid(request.Id));
             return recipe;
         }
 
         public override async Task<RecipeResponse> AddRecipe(Recipe recipe, ServerCallContext context)
         {
-            await data.AddRecipeAsync(recipe);
+            await _Data.AddRecipeAsync(recipe);
             return new RecipeResponse() { Recipe = recipe, StatusCode = StatusCodes.Status200OK };
         }
 
         public override async Task<RecipeResponse> EditRecipe(EditRecipeRequest request, ServerCallContext context)
         {
-            var updatedRecipe = await data.EditRecipeAsync(new Guid(request.Id), request.NewRecipe);
+            var updatedRecipe = await _Data.EditRecipeAsync(new Guid(request.Id), request.NewRecipe);
             return new RecipeResponse() { StatusCode = StatusCodes.Status200OK, Recipe = updatedRecipe };
         }
 
         public override async Task<RecipeResponse> DeleteRecipe(RecipeRequest request, ServerCallContext context)
         {
-            await data.RemoveRecipeAsync(new Guid(request.Id));
+            await _Data.RemoveRecipeAsync(new Guid(request.Id));
             return new RecipeResponse(){ StatusCode = StatusCodes.Status200OK, Recipe = null};
         }
 
         public override async Task<CategoryList> GetAllCategories(EmptyRequest request, ServerCallContext context)
         {
-            var categories = await data.GetAllCategoriesAsync();
+            var categories = await _Data.GetAllCategoriesAsync();
             CategoryList categoryList = new();
             foreach (var category in categories)
             {
@@ -59,19 +59,19 @@ namespace GrpcServer.Services
 
         public override async Task<CategoryResponse> AddCategory(Category request, ServerCallContext context)
         {
-            await data.AddCategoryAsync(request.CategoryName);
+            await _Data.AddCategoryAsync(request.CategoryName);
             return new CategoryResponse() { StatusCode = 200 };
         }
 
         public override async Task<CategoryResponse> EditCategory(EditCategoryRequest request, ServerCallContext context)
         {
-            await data.EditCategoryAsync(request.OldCategory,request.NewCategory);
+            await _Data.EditCategoryAsync(request.OldCategory,request.NewCategory);
             return new CategoryResponse() { StatusCode = 200 };
         }
 
         public override async Task<CategoryResponse> DeleteCategory(Category request, ServerCallContext context)
         {
-            await data.RemoveCategoryAsync(request.CategoryName);
+            await _Data.RemoveCategoryAsync(request.CategoryName);
             return new CategoryResponse() { StatusCode = 200 };
         }
     }
