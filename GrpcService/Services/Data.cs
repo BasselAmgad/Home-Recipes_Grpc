@@ -1,5 +1,6 @@
 ﻿using GrpcServer.Protos;
-using System.Text.Json;
+using Newtonsoft.Json;
+
 public class Data
 {
     private List<Recipe> _recipes { get; set; } = new();
@@ -160,12 +161,12 @@ public class Data
             if (!File.Exists(_recipesFilePath))
             {
                 _recipes = new List<Recipe>();
-                await File.WriteAllTextAsync(_recipesFilePath, JsonSerializer.Serialize(_recipes));
+                await File.WriteAllTextAsync(_recipesFilePath, JsonConvert.SerializeObject(_recipes));
             }
             if (!File.Exists(_categoriesFilePath))
             {
                 _categories = new List<string>();
-                await File.WriteAllTextAsync(_categoriesFilePath, JsonSerializer.Serialize(_categories));
+                await File.WriteAllTextAsync(_categoriesFilePath, JsonConvert.SerializeObject(_categories));
             }
         }
         catch (Exception ex)
@@ -177,14 +178,15 @@ public class Data
             using (StreamReader r = new(_recipesFilePath))
             {
                 var data = await r.ReadToEndAsync();
-                var json = JsonSerializer.Deserialize<List<Recipe>>(data);
+                var json = JsonConvert.DeserializeObject<List<Recipe>>(data);
+                Console.WriteLine(json[0]);
                 if (json != null)
                     _recipes = json;
             }
             using (StreamReader r = new(_categoriesFilePath))
             {
                 var data = await r.ReadToEndAsync();
-                var json = JsonSerializer.Deserialize<List<string>>(data);
+                var json = JsonConvert.DeserializeObject<List<string>>(data);
                 if (json != null)
                     _categories = json;
             }
@@ -200,8 +202,8 @@ public class Data
     {
         try
         {
-            await File.WriteAllTextAsync(_recipesFilePath, JsonSerializer.Serialize(_recipes));
-            await File.WriteAllTextAsync(_categoriesFilePath, JsonSerializer.Serialize(_categories));
+            await File.WriteAllTextAsync(_recipesFilePath, JsonConvert.SerializeObject(_recipes));
+            await File.WriteAllTextAsync(_categoriesFilePath, JsonConvert.SerializeObject(_categories));
         }
         catch (Exception ex)
         {
