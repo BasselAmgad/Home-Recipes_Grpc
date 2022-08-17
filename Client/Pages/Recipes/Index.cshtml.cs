@@ -23,7 +23,7 @@ namespace Exercise3.Pages.Recipes
                 var recipeCategories = new List<string>();
                 foreach (var categoryItem in recipe.Categories)
                 {
-                    recipeCategories.Add(categoryItem.CategoryName);
+                    recipeCategories.Add(categoryItem);
                 }
                 var recipeObject = new Recipe(
                     recipe.Id,

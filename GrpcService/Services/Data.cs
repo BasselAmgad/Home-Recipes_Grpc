@@ -1,6 +1,5 @@
 ﻿using GrpcServer.Protos;
 using System.Text.Json;
-using Microsoft.Extensions.Logging.Console;
 public class Data
 {
     private static Data? _instance = null;
@@ -9,7 +8,7 @@ public class Data
     private List<Recipe> _recipes { get; set; } = new();
     private List<string> _categories { get; set; } = new();
     private string _recipesFilePath;
-    private string _categoriesFilePath;
+    private string _categoriesFilePath; 
 
     public Data(ILogger logger)
     {

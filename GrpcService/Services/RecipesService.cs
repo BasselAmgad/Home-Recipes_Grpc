@@ -15,7 +15,7 @@ namespace GrpcServer.Services
         {
             var recipes = await data.GetRecipesAsync();
             RecipeList recipeList = new();
-            foreach(var recipe in recipes)
+            foreach (var recipe in recipes)
             {
                 recipeList.Recipes.Add(recipe);
             }
