@@ -17,7 +17,7 @@ public class Data
     public async Task<Recipe> GetRecipeAsync(Guid id)
     {
         await LoadData();
-        var recipe = _recipes.Find(r => r.Id.Equals(id));
+        var recipe = _recipes.Find(r => r.Id.Equals(id.ToString()));
         if (recipe == null)
             recipe = new Recipe();
         return recipe;
@@ -179,7 +179,6 @@ public class Data
             {
                 var data = await r.ReadToEndAsync();
                 var json = JsonConvert.DeserializeObject<List<Recipe>>(data);
-                Console.WriteLine(json[0]);
                 if (json != null)
                     _recipes = json;
             }

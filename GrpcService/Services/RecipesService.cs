@@ -25,6 +25,7 @@ namespace GrpcServer.Services
 
         public override async Task<Recipe> GetRecipe(RecipeRequest request, ServerCallContext context)
         {
+            
             var recipe = await _Data.GetRecipeAsync(new Guid(request.Id));
             return recipe;
         }

@@ -1,35 +1,46 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text;
+using Client.Protos;
+using Grpc.Net.Client;
 
 namespace Exercise3.Pages.Recipes
 {
     public class CreateModel : PageModel
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly Client.Protos.Recipes.RecipesClient _client;
         [BindProperty]
         public Recipe Recipe { get; set; } = new();
 
-        public CreateModel(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
+        public CreateModel(Client.Protos.Recipes.RecipesClient client) => _client = client;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var client = _httpClientFactory.CreateClient("Recipes");
-            var fetchCategories = await client.GetFromJsonAsync<List<string>>("categories");
-            if (fetchCategories == null)
-                return NotFound();
-            Recipe.Categories = fetchCategories;
+            var reply = await _client.GetAllCategoriesAsync(new EmptyRequest { });
+            var fetchCategories = reply.Categories;
+            foreach (var category in fetchCategories)
+            {
+                Recipe.Categories.Add(category);
+            }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid || Recipe == null)
+            if (!ModelState.IsValid || Recipe == null)
                 return Page();
-            var client = _httpClientFactory.CreateClient("Recipes");
-            var request = await client.PostAsJsonAsync<Recipe>("recipes",Recipe);
-            if(request.IsSuccessStatusCode)
+            var newRecipe = new Client.Protos.Recipe
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = Recipe.Title,
+                Ingredients = Recipe.Ingredients,
+                Instructions = Recipe.Instructions
+            };
+            foreach(var category in Recipe.Categories)
+            {
+                newRecipe.Categories.Add(category);
+            }
+            var reply = await _client.AddRecipeAsync(newRecipe);
+            if(reply.StatusCode.Equals(200))
                 return RedirectToPage("./Index");
             return Page();
         }

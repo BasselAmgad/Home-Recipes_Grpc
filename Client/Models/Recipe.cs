@@ -1,4 +1,5 @@
-﻿public class Recipe
+﻿using Google.Protobuf.Collections;
+public class Recipe
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
@@ -13,6 +14,7 @@
         Ingredients = "";
         Instructions = "";
     }
+
     public Recipe(string title, string ingredients, string instructions, List<string> categories)
     {
         Id = Guid.NewGuid();
@@ -21,12 +23,17 @@
         Instructions = instructions;
         Categories = categories;
     }
-    public Recipe(string id, string title, string ingredients, string instructions, List<string> categories)
+
+    public Recipe(Client.Protos.Recipe recipe)
     {
-        Id = new Guid(id);
-        Title = title;
-        Ingredients = ingredients;
-        Instructions = instructions;
-        Categories = categories;
+        Console.WriteLine(recipe.Id);
+        Id = new Guid(recipe.Id);
+        Title = recipe.Title;
+        Ingredients = recipe.Ingredients;
+        Instructions = recipe.Instructions;
+        foreach (var category in recipe.Categories)
+        {
+            Categories.Add(category);
+        }
     }
 }

@@ -7,30 +7,18 @@ namespace Exercise3.Pages.Recipes
 {
     public class IndexModel : PageModel
     {
-        private readonly IConfiguration _config;
+        private readonly Client.Protos.Recipes.RecipesClient _client;
         public List<Recipe> Recipes { get; set; } = new();
         public string? ChoosenCategory { get; set; }
-        public IndexModel(IConfiguration configuration) => _config = configuration;
+        public IndexModel(Client.Protos.Recipes.RecipesClient client) => _client = client;
 
         public async Task OnGetAsync(string? category)
         {
-            var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
-            var client = new Client.Protos.Recipes.RecipesClient(channel);
-            var reply = await client.GetAllRecipesAsync(new EmptyRequest { });
+            var reply = await _client.GetAllRecipesAsync(new EmptyRequest { });
             var fetchRecipes = new List<Recipe>();
             foreach(var recipe in reply.Recipes)
             {
-                var recipeCategories = new List<string>();
-                foreach (var categoryItem in recipe.Categories)
-                {
-                    recipeCategories.Add(categoryItem);
-                }
-                var recipeObject = new Recipe(
-                    recipe.Id,
-                    recipe.Title, 
-                    recipe.Ingredients, 
-                    recipe.Instructions, 
-                    recipeCategories);
+                var recipeObject = new Recipe(recipe);
                 fetchRecipes.Add(recipeObject);
             }
             if (fetchRecipes is not null)

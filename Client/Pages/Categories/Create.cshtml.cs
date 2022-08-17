@@ -7,10 +7,10 @@ namespace Exercise3.Pages.Categories
 {
     public class CreateModel : PageModel
     {
-        private readonly IConfiguration _config;
+        private readonly Client.Protos.Recipes.RecipesClient _client;
         [BindProperty]
         public string Category { get; set; } = default!;
-        public CreateModel(IConfiguration configuration) => _config = configuration;
+        public CreateModel(Client.Protos.Recipes.RecipesClient client) => _client = client;
 
         public void OnGet()
         {
@@ -18,10 +18,8 @@ namespace Exercise3.Pages.Categories
         
         public async Task<IActionResult> OnPostAsync()
         {
-            var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
-            var client = new Client.Protos.Recipes.RecipesClient(channel);
             var request = new Category { CategoryName = Category };
-            var reply = await client.AddCategoryAsync(request);
+            var reply = await _client.AddCategoryAsync(request);
             return Page();
         }
     }

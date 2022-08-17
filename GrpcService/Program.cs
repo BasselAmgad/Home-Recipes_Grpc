@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddSingleton<Data>(d => new Data());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

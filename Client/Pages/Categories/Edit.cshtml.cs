@@ -7,14 +7,14 @@ namespace Exercise3.Pages.Categories
 {
     public class EditModel : PageModel
     {
-        private readonly IConfiguration _config;
+        private readonly Client.Protos.Recipes.RecipesClient _client;
         [BindProperty]
         public string Category { get; set; }
         [BindProperty]
         public string NewCategory { get; set; }
-        public EditModel(IConfiguration config)
+        public EditModel(Client.Protos.Recipes.RecipesClient client)
         {
-            _config = config;
+            _client = client;
             Category = "";
             NewCategory = "";
         }
@@ -26,9 +26,7 @@ namespace Exercise3.Pages.Categories
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var channel = GrpcChannel.ForAddress(_config["grpcUrl"]);
-            var client = new Client.Protos.Recipes.RecipesClient(channel);
-            var reply = await client.EditCategoryAsync(
+            var reply = await _client.EditCategoryAsync(
                 new EditCategoryRequest { OldCategory = Category, NewCategory = NewCategory });
             return Page();
         }
