@@ -28,7 +28,7 @@ namespace Exercise3.Pages.Categories
         {
             var reply = await _client.EditCategoryAsync(
                 new EditCategoryRequest { OldCategory = Category, NewCategory = NewCategory });
-            RedirectToPage("./Index");
+            return RedirectToPage("./Index");
         }
     }
 }
