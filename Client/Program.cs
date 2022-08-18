@@ -19,24 +19,13 @@ builder.Services.AddGrpcClient<Recipes.RecipesClient>(client =>
     client.Address = new Uri(config["grpcUrl"]);
 });
 
-builder.Services.AddHttpClient("Recipes", httpClient =>
-{
-    httpClient.BaseAddress = new Uri(config["url"]);
-    // using Microsoft.Net.Http.Headers;
-    // The GitHub API requires two headers.
-    httpClient.DefaultRequestHeaders.Add(
-        HeaderNames.Accept, "application/json");
-    httpClient.DefaultRequestHeaders.Add(
-        HeaderNames.UserAgent, "HttpRequestsSample");
-});
-
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseGrpcWeb(); 
 app.UseAuthorization();
 
 app.MapRazorPages();
