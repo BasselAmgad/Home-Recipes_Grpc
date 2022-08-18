@@ -26,7 +26,6 @@ public class Recipe
 
     public Recipe(Client.Protos.Recipe recipe)
     {
-        Console.WriteLine(recipe.Id);
         Id = new Guid(recipe.Id);
         Title = recipe.Title;
         Ingredients = recipe.Ingredients;

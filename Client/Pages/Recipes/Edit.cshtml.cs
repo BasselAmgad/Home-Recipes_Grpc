@@ -31,9 +31,10 @@ namespace Exercise3.Pages.Recipes
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var newRecipe = new Client.Protos.Recipe 
+            var newRecipe = new Client.Protos.Recipe
             {
                 Id = Recipe.Id.ToString(),
+                Title = Recipe.Title,
                 Ingredients = Recipe.Ingredients,
                 Instructions = Recipe.Instructions
             };

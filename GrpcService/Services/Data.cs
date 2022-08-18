@@ -52,7 +52,7 @@ public class Data
         recipe.Ingredients = newRecipe.Ingredients;
         recipe.Instructions = newRecipe.Instructions;
         recipe.Categories.Clear();
-        foreach(var category in recipe.Categories)
+        foreach(var category in newRecipe.Categories)
         {
             recipe.Categories.Add(category);
         }
