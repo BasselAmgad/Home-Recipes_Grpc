@@ -1,4 +1,7 @@
 using GrpcServer.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Net;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Additional configuration is required to successfully run gRPC on macOS.
@@ -6,7 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
-builder.Services.AddSingleton<Data>(d => new Data());
+builder.Services.AddSingleton<Data>();
+builder.WebHost.ConfigureKestrel(k =>
+{
+    k.ConfigureEndpointDefaults(options => options.Protocols = HttpProtocols.Http2);
+});
+
 
 var app = builder.Build();
 
