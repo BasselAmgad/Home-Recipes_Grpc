@@ -21,11 +21,17 @@ builder.Services.AddGrpcClient<Recipes.RecipesClient>(client =>
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseGrpcWeb(); 
 app.UseAuthorization();
 
 app.MapRazorPages();
