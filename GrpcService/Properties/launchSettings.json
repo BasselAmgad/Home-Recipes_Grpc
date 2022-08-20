@@ -4,7 +4,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "https://basselamgad.azurewebsites.net/",
+      "applicationUrl": "https://localhost:7012/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
